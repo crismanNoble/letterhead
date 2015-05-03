@@ -1,16 +1,21 @@
 //still todo:
 
-//make a grid for the table:
-//11 cols of 42px with 12px gutters= 582 of available 583
 
 //make the ability to add tasks / groups / subtasks
 
 //reorder groups?
 
+
+//timespent 3hours so far
+
 $(document).ready(function(){
 	console.log('yo');
 
 	listen();
+
+	$('.toggle').click(function(){
+		$('.invoice').toggleClass('hidden');
+	});
 
 });
 var editing = false;
