@@ -39,6 +39,15 @@ module.exports = function(grunt) {
         ]
       }
     },
+    bower: {
+      install: {
+        options: {
+          copy: false
+        }
+
+       //just run 'grunt bower:install' and you'll see files from your Bower packages in lib directory
+      }
+    },
 
 
     buildGhPages: {
@@ -52,7 +61,7 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('default', ['clean','copy','less']);
+  grunt.registerTask('default', ['bower','clean','copy','less']);
   grunt.registerTask('build',['default','buildGhPages']);
 
 
