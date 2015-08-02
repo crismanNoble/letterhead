@@ -53,6 +53,9 @@ module.exports = function(grunt) {
     buildGhPages: {
       ghPages: {
         // Leave empty if you just want to run the defaults
+        options: {
+          exclude: ['bower_components','dist']
+        }
       },
     },
 
@@ -62,7 +65,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['bower','clean','copy','less']);
-  grunt.registerTask('build',['default','buildGhPages','default']);
+  grunt.registerTask('build',['default','buildGhPages']);
 
 
 }
