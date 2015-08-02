@@ -39,11 +39,21 @@ module.exports = function(grunt) {
         ]
       }
     },
+
+
+    buildGhPages: {
+      ghPages: {
+        // Leave empty if you just want to run the defaults
+      },
+    },
+
+
     clean: ["dist"]
 
   });
 
   grunt.registerTask('default', ['clean','copy','less']);
+  grunt.registerTask('build',['default','buildGhPages']);
 
 
 }
