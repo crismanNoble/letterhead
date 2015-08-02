@@ -1,0 +1,23 @@
+{
+  "name": "letterhead",
+  "version": "0.0.0",
+  "homepage": "https://github.com/crismanNoble/letterhead",
+  "authors": [
+    "Cris Noble <cris@crisnoble.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  },
+  "devDependencies": {
+    "canonical.css": "~1.1.1"
+  }
+}
