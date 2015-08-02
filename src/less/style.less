@@ -24,6 +24,9 @@
 
 @c13: @c1*13 + 12*@gutter;
 
+@red: rgb(165,29,29);
+@grey : #f1f1f1;
+
 :root {
 	font-size: 12px;
 }
@@ -251,12 +254,76 @@ strong {
 		}
 	}
 }
+.controls {
+	overflow: auto;
+}
+.toolTitle,.tool,.switch {
+	float: left;
+	margin-right: 7px;
+}
+.toolTitle {
+	padding: 2px 6px 3px;
+	border: 2px solid transparent;
+}
 
+.btn {
+	background-color: transparent;
+	border: 2px solid #333;
+	border-radius: 5px;
+	color: #333;
+	cursor: pointer;
+	transition: all .2s linear;
+	padding: 2px 6px 3px;
+	&:hover{
+		background: rgba(255,255,255,1);
+	}
+	&:focus {
+		outline: none;
+	}
+}
+
+.btn-red {
+	border-color: @red;
+}
+
+.editing {
+	border: 0;
+	padding: 0;
+	margin:0;
+	outline: none;
+	background-color: @grey;
+}
+.p-editing {
+	overflow: auto;
+	min-width: 320px;
+	display: inline-block;
+	* {
+		float: left;
+	}
+	button {
+		margin-left: 5px;
+	}
+
+}
+.inline-btn {
+	font-family: 'Helvetica-Light';
+	margin:0;
+	padding: 0 4px;
+	border-radius: 3px;
+	border-width: 0;
+	background: @red;
+	color: white;
+	cursor: pointer;
+
+}
+p.groupTitle {
+	padding-top:0;
+}
 
 @media print {
 	:root {
 	-webkit-print-color-adjust: exact;
-}
+	}
 
 	.paper {
 		box-shadow: none;

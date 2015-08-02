@@ -14,11 +14,16 @@
     </head>
 <body>
 <div class="wrapper">
-    <h1>Invoice Creator</h1>
-    <button class="toggle">toggle</button>
-    <div class="invoiceActions">
-        <button class="newProject">new section</button>
+    <h1>Letterhead Creator</h1>
+    <div class="controls">
+      <button class="tool btn" data-action="newGroup">new section</button>
+
+      <span class="toolTitle">From:</span>
+      <button class="switch btn btn-red" data-action="changeFrom" data-who="cris">Cris</button>
+      <button class="switch btn" data-action="changeFrom" data-who="angela">Angela</button>
+      <button class="switch btn" data-action="changeFrom" data-who="kovalent">Kovalent</button>
     </div>
+
 </div>
 
     <div class="paper">
@@ -30,8 +35,8 @@
                 <p><strong class="editable">Kovalent</strong></p>
                 <p class="editable">4430 Highland Ave</p>
                 <p class="editable not-spaced">San Diego, CA 92115</p>
-                <p class="editable">+1 630 677 8855</p>
-                <p class="editable not-spaced">angela@kovalent.co</p>
+                <p class="editable fromWho" data-what="phone">+1 619 549 7322</p>
+                <p class="editable not-spaced fromWho" data-what="email">cris@kovalent.co</p>
                 <p class="editable">http://kovalent.co</p>
             </div>
             <div class="line-thing">
@@ -100,10 +105,11 @@
             </div>
         </div>
         <div class="invoice projectBased">
-
+          <div class="groups">
             <div class="group">
+                <p class="groupTitle editable rowAdder colSwitcher">Phase 2.1</p>
                 <div class="row">
-                    <div class="groupTitle colTitle col bottomBorder editable rowAdder">Phase 2.1</div>
+                    <div class="groupTitle colTitle col bottomBorder editable">Task</div>
                     <div class="groupTitle colTitle col bottomBorder">Hours</div>
                     <div class="groupTitle colTitle col bottomBorder">Subtotal</div>
                 </div>
@@ -123,6 +129,7 @@
                     <div class="col editable subDollars">600</div>
                 </div>
             </div>
+          </div>
             <div class="total red">
                 <span class="total-title">
                 Total
@@ -136,17 +143,15 @@
             </div>
         </div>
         <div class="disclaimer">
-                <p class="not-spaced">This invoice is confidential and is intended solely for the use of the addressee(s) named above.<br/>Please submit payment no later than 30 days from the date of the invoice.</p>
-                <p class="red">Address all checks to Kovalent.</p>
+                <p class="not-spaced editable">This invoice is confidential and is intended solely for the use of the addressee(s) named above.<br/>Please submit payment no later than 30 days from the date of the invoice.</p>
+                <p class="red editable">Address all checks to Kovalent.</p>
             </div>
         <div class="final-bar">
 
         </div>
 
     </div>
-
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="js/jquery.min.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>

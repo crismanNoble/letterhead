@@ -7,17 +7,70 @@
 
 
 //timespent 3hours so far
+var globalEditor;
+
+var whoData = {
+	angela : {
+		phone: '+1 630 677 8855',
+		email: 'angela@kovalent.co'
+	},
+	cris : {
+		phone: '+1 619 549 7322',
+		email: 'cris@kovalent.co'
+	},
+	kovalent: {
+		phone: '+1 619 719 1769',
+		email: 'info@kovalent.co'
+	}
+}
 
 $(document).ready(function(){
-	console.log('yo');
+	console.log('yolo');
 
 	listen();
 
-	$('.toggle').click(function(){
-		$('.invoice').toggleClass('hidden');
-	});
+	listenToControls();
 
 });
+
+function listenToControls(){
+	$('.tool').click(function(){
+		var what = $(this).data('action');
+		console.log(what);
+		if(what == 'toggle'){
+			toggle();
+		} else if (what == 'newGroup') {
+			newGroup();
+		}
+	});
+	$('.switch').click(function(){
+		var what = $(this).data('action');
+		$('.switch').removeClass('btn-red');
+		$(this).addClass('btn-red');
+		if(what == 'changeFrom') {
+			var who = $(this).data('who');
+			changeFrom(who);
+		}
+	});
+}
+function changeFrom(who){
+	console.log('changing from');
+	console.log(who);
+	$('.fromWho').each(function(){
+		var what = $(this).data('what');
+		$(this).text(whoData[who][what]);
+	});
+}
+
+function toggle(){
+	console.log('toggle');
+	$('.invoice').toggleClass('hidden');
+}
+
+function newSection(){
+	console.log('new section');
+}
+
 var editing = false;
 function listen(){
 	calcTotals();
@@ -31,9 +84,11 @@ function listen(){
 	$('.save').on('click',function(){
 		editOff($(this));
 	});
+	//this is hard because if you click a button that is part of the editor
+	//, things get wierd
 	// $('.editing').off('blur');
 	// $('.editing').on('blur',function(){
-	// 	editOff($(this).parent().find('.save'));
+	// 	editOff(globalEditor.find('.save'));
 	// });
 
 	$('.newRow').off('click');
@@ -71,22 +126,29 @@ function listen(){
 }
 
 function newGroup(){
-	var $el = $('.invoice:not(.hidden)');
-	var $html = '<div class="group"><div class="row"><div class="groupTitle colTitle col bottomBorder editable rowAdder">Group Title</div><div class="groupTitle colTitle col bottomBorder">Hours</div><div class="groupTitle colTitle col bottomBorder">Subtotal</div></div>';
 
-	var $total = $el.find('.total').html();
+	var $el = $('.groups');
+	var $group = $el.find('.group:last-of-type').html();
+	$el.append('<div class="group">'+$group+'</div>');
 
-	$el.find('.total').remove();
+	// var $el = $('.invoice');
+	// var $spot = $('.groups');
 
-	var current = $el.html() + $html;
-	var totalHtml = '<div class="total red">' + $total + '</div>';
-	console.log(totalHtml);
-	$el.html(current);
+	// var $html = '<div class="group"><div class="row"><div class="groupTitle colTitle col bottomBorder editable rowAdder">Group Title</div><div class="groupTitle colTitle col bottomBorder">Hours</div><div class="groupTitle colTitle col bottomBorder">Subtotal</div></div>';
 
-	var newHTML = $el.html();
-	console.log(newHTML);
-	newHTML += totalHtml;
-	$el.html(newHTML);
+	// var $total = $el.find('.total').html();
+
+	// $el.find('.total').remove();
+
+	// var current = $el.html() + $html;
+	// var totalHtml = '<div class="total red">' + $total + '</div>';
+	// console.log(totalHtml);
+	// $el.html(current);
+
+	// var newHTML = $el.html();
+	// console.log(newHTML);
+	// newHTML += totalHtml;
+	// $el.html(newHTML);
 
 	listen();
 }
@@ -107,25 +169,34 @@ function newRow($el){
 }
 function editOn($el) {
 	console.log('edit on');
+	globalEditor = $el;
 	if(editing == false){
 		editing = true;
 		$old = $el.text();
 
 		console.log('old: ' + $old);
 
-		var $input = '<input type="text" class="editing" value="'+$old+'"/><button class="save">save</button>';
+		var $input = '<input type="text" class="editing" value="'+$old+'"/><button class="save inline-btn">save</button>';
 		if($el.hasClass('subAdder')){
-			$input += '<button class="newSub">newSub</button><button class="killRow">kill row</button>';
+			$input += '<button class="newSub inline-btn">newSub</button><button class="killRow inline-btn">kill row</button>';
 		}
 		if($el.hasClass('rowAdder')){
-			$input += '<button class="newRow">new row</button><button class="killGroup">kill group</button><button class="newGroup">new group</button>';
+			$input += '<button class="newRow inline-btn">new row</button><button class="killGroup inline-btn">kill group</button>';
 		}
 		if($el.hasClass('subItem')){
-			$input += '<button class="killItem">kill item</button>';
+			$input += '<button class="killItem inline-btn">kill item</button>';
 		}
+
+		if($el.hasClass('colSwitcher')){
+			$input += '<span style="margin-left:5px;float:left">cols:</span><button class="colSwitch inline-btn" data-cols="2">2</button>';
+			$input += '<button class="colSwitch inline-btn" data-cols="3">3</button>';
+			$input += '<button class="colSwitch inline-btn" data-cols="4">4</button>';
+		}
+
 		$el.html($input);
 		$el.find('.editing').focus();
 
+		$el.addClass('p-editing');
 		$el.removeClass('editable');
 		listen();
 
@@ -141,6 +212,7 @@ function editOff($el){
 	$parent = $el.parent();
 	$newVal = $parent.find('.editing').val();
 	$parent.html($newVal);
+	$parent.removeClass('p-editing');
 	$parent.addClass('editable');
 	listen();
 	console.log($newVal);
@@ -168,10 +240,10 @@ function formatDollars(amount){
 }
 
 function commaSeparateNumber(val){
-    while (/(\d+)(\d{3})/.test(val.toString())){
-      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
-    }
-    return val;
-  }
+		while (/(\d+)(\d{3})/.test(val.toString())){
+			val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+		}
+		return val;
+	}
 
 
