@@ -159,22 +159,22 @@ function listen(){
 	});
 
 
-	// this is hard because if you click a button that is part of the editor
-	//, things get wierd
-	$('.editing').off('blur');
-	$('.editing').on('blur',function(e){
-		setTimeout(function(){
-			console.log('blurred line');
-			if(locked){
-				console.log('nerp');
-				locked = false;
-			} else {
-				console.log('can edit');
-				editOff(globalEditor.find('.save').parent());
-			}
-		},40);
+	// // this is hard because if you click a button that is part of the editor
+	// //, things get wierd
+	// $('.editing').off('blur');
+	// $('.editing').on('blur',function(e){
+	// 	setTimeout(function(){
+	// 		console.log('blurred line');
+	// 		if(locked){
+	// 			console.log('nerp');
+	// 			locked = false;
+	// 		} else {
+	// 			console.log('can edit');
+	// 			editOff(globalEditor.find('.save').parent());
+	// 		}
+	// 	},40);
 
-	});
+	// });
 }
 
 function newGroup(){
