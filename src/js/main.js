@@ -1,13 +1,3 @@
-//still todo:
-
-//reorder groups?
-
-//new row should be 4col in case
-//blur needs to check lock out.
-
-
-
-//timespent 3hours so far
 var globalEditor;
 
 var whoData = {
