@@ -1,23 +1,77 @@
 //still todo:
 
-
-//make the ability to add tasks / groups / subtasks
-
 //reorder groups?
+
+//new row should be 4col in case
+//blur needs to check lock out.
+
 
 
 //timespent 3hours so far
+var globalEditor;
+
+var whoData = {
+	angela : {
+		phone: '+1 630 677 8855',
+		email: 'angela@kovalent.co'
+	},
+	cris : {
+		phone: '+1 619 549 7322',
+		email: 'cris@kovalent.co'
+	},
+	kovalent: {
+		phone: '+1 619 719 1769',
+		email: 'info@kovalent.co'
+	}
+}
 
 $(document).ready(function(){
-	console.log('yo');
+	console.log('yolo');
 
 	listen();
 
-	$('.toggle').click(function(){
-		$('.invoice').toggleClass('hidden');
-	});
+	listenToControls();
 
 });
+
+function listenToControls(){
+	$('.tool').click(function(){
+		var what = $(this).data('action');
+		console.log(what);
+		if(what == 'toggle'){
+			toggle();
+		} else if (what == 'newGroup') {
+			newGroup();
+		}
+	});
+	$('.switch').click(function(){
+		var what = $(this).data('action');
+		$('.switch').removeClass('btn-red');
+		$(this).addClass('btn-red');
+		if(what == 'changeFrom') {
+			var who = $(this).data('who');
+			changeFrom(who);
+		}
+	});
+}
+function changeFrom(who){
+	console.log('changing from');
+	console.log(who);
+	$('.fromWho').each(function(){
+		var what = $(this).data('what');
+		$(this).text(whoData[who][what]);
+	});
+}
+
+function toggle(){
+	console.log('toggle');
+	$('.invoice').toggleClass('hidden');
+}
+
+function newSection(){
+	console.log('new section');
+}
+var locked = false;
 var editing = false;
 function listen(){
 	calcTotals();
@@ -27,66 +81,119 @@ function listen(){
 
 		editOn($(this));
 	});
+
 	$('.save').off('click');
-	$('.save').on('click',function(){
-		editOff($(this));
+	$('.save').on('click',function(e){
+		locked = true;
+		setTimeout(function(){locked = false;},50);
+		e.preventDefault();
+		e.stopPropagation();
+		editOff($(this).parent());
 	});
-	// $('.editing').off('blur');
-	// $('.editing').on('blur',function(){
-	// 	editOff($(this).parent().find('.save'));
-	// });
+
 
 	$('.newRow').off('click');
-	$('.newRow').on('click',function(){
-		newRow($(this));
+	$('.newRow').on('click',function(e){
+		locked = true;
+		setTimeout(function(){locked = false;},50);
+		e.preventDefault();
+		e.stopPropagation();
+		newRow($(this).parent());
 	});
 
 	$('.killRow').off('click');
-	$('.killRow').on('click',function(){
-		$(this).parent().parent().parent().remove();
+	$('.killRow').on('click',function(e){
+		locked = true;
+		setTimeout(function(){locked = false;},50);
+		e.preventDefault();
+		e.stopPropagation();
+		$(this).parent().parent().parent().parent().remove();
 		editing = false;
 	});
 	$('.killItem').off('click');
-	$('.killItem').on('click',function(){
-		$(this).parent().remove();
+	$('.killItem').on('click',function(e){
+		locked = true;
+		setTimeout(function(){locked = false;},50);
+		e.preventDefault();
+		e.stopPropagation();
+		$(this).parent().parent().remove();
 		editing = false;
 	});
 
 	$('.newSub').off('click');
-	$('.newSub').on('click',function(){
-		newSub($(this).parent().parent());
+	$('.newSub').on('click',function(e){
+		locked = true;
+		setTimeout(function(){locked = false;},50);
+		e.preventDefault();
+		e.stopPropagation();
+		newSub($(this).parent().parent().parent());
 	});
 
 	$('.newGroup').off('click');
-	$('.newGroup').on('click',function(){
+	$('.newGroup').on('click',function(e){
+		locked = true;
+		setTimeout(function(){locked = false;},50);
+		e.preventDefault();
+		e.stopPropagation();
 		newGroup();
 	});
 
 	$('.killGroup').off('click');
-	$('.killGroup').on('click',function(){
-		$(this).parent().parent().parent().remove();
+	$('.killGroup').on('click',function(e){
+		locked = true;
+		setTimeout(function(){locked = false;},50);
+		e.preventDefault();
+		e.stopPropagation();
+		$(this).parent().parent().parent().parent().remove();
 		editing = false;
 	});
 
+	$('.colSwitch').on('click',function(e){
+		locked = true;
+		setTimeout(function(){locked = false;},50);
+		console.log(e);
+		e.preventDefault();
+		e.stopPropagation();
+		var cols = 'col-' + $(this).data('cols');
+		var $group;
+		//if($(this).parent().parent().hasClass('total')){
+			$group = $(this).parent().parent().parent();
+		// } else {
+		// 	$group = $(this).parent().parent().parent();
+		// }
+
+		$group.removeClass('col-2');
+		$group.removeClass('col-3');
+		$group.removeClass('col-4');
+		$group.addClass(cols);
+	});
+
+
+	// this is hard because if you click a button that is part of the editor
+	//, things get wierd
+	$('.editing').off('blur');
+	$('.editing').on('blur',function(e){
+		setTimeout(function(){
+			console.log('blurred line');
+			if(locked){
+				console.log('nerp');
+				locked = false;
+			} else {
+				console.log('can edit');
+				editOff(globalEditor.find('.save').parent());
+			}
+		},40);
+
+	});
 }
 
 function newGroup(){
-	var $el = $('.invoice:not(.hidden)');
-	var $html = '<div class="group"><div class="row"><div class="groupTitle colTitle col bottomBorder editable rowAdder">Group Title</div><div class="groupTitle colTitle col bottomBorder">Hours</div><div class="groupTitle colTitle col bottomBorder">Subtotal</div></div>';
 
-	var $total = $el.find('.total').html();
+	var $el = $('.groups');
+	var $group = $el.find('.group:last-of-type').clone();
 
-	$el.find('.total').remove();
+	$el.append($group);
 
-	var current = $el.html() + $html;
-	var totalHtml = '<div class="total red">' + $total + '</div>';
-	console.log(totalHtml);
-	$el.html(current);
-
-	var newHTML = $el.html();
-	console.log(newHTML);
-	newHTML += totalHtml;
-	$el.html(newHTML);
 
 	listen();
 }
@@ -98,34 +205,43 @@ function newSub($el){
 	listen();
 }
 function newRow($el){
-	var $parent = $el.parent().parent().parent();
-	$html ='<div class="row"><div class="col"><span class="title editable subAdder">Task Title</span></div><div class="col subHours editable">0</div><div class="col editable subDollars">0</div></div>';
-	var current = $parent.html();
-	current += $html;
-	$parent.html(current);
+	var $parent = $el.parent().parent();
+	console.log($parent);
+	$row ='<div class="row"><div class="col editable date">12-12-2014</div><div class="col task"><span class="title editable subAdder">Fixing Product Image</span></div><div class="col subHours editable">12</div><div class="col editable subDollars">600</div></div>';
+	$parent.append($row);
 	listen();
 }
 function editOn($el) {
 	console.log('edit on');
+	globalEditor = $el;
 	if(editing == false){
 		editing = true;
-		$old = $el.text();
+		$old = $el.text().trim();
 
 		console.log('old: ' + $old);
 
-		var $input = '<input type="text" class="editing" value="'+$old+'"/><button class="save">save</button>';
+		var $input = '<input type="text" class="editing" value="'+$old+'"/><div class="inline-controls"><button class="save inline-btn">save</button>';
 		if($el.hasClass('subAdder')){
-			$input += '<button class="newSub">newSub</button><button class="killRow">kill row</button>';
+			$input += '<button class="newSub inline-btn">newSub</button><button class="killRow inline-btn">kill row</button>';
 		}
 		if($el.hasClass('rowAdder')){
-			$input += '<button class="newRow">new row</button><button class="killGroup">kill group</button><button class="newGroup">new group</button>';
+			$input += '<button class="newRow inline-btn">new row</button><button class="killGroup inline-btn">kill group</button>';
 		}
 		if($el.hasClass('subItem')){
-			$input += '<button class="killItem">kill item</button>';
+			$input += '<button class="killItem inline-btn">kill item</button>';
 		}
+
+		if($el.hasClass('colSwitcher')){
+			$input += '<span style="margin-left:5px;float:left">cols:</span><button class="colSwitch inline-btn" data-cols="2">2</button>';
+			$input += '<button class="colSwitch inline-btn" data-cols="3">3</button>';
+			$input += '<button class="colSwitch inline-btn" data-cols="4">4</button>';
+		}
+		$input += '</div>';
+
 		$el.html($input);
 		$el.find('.editing').focus();
 
+		$el.addClass('p-editing');
 		$el.removeClass('editable');
 		listen();
 
@@ -141,6 +257,7 @@ function editOff($el){
 	$parent = $el.parent();
 	$newVal = $parent.find('.editing').val();
 	$parent.html($newVal);
+	$parent.removeClass('p-editing');
 	$parent.addClass('editable');
 	listen();
 	console.log($newVal);
@@ -168,10 +285,10 @@ function formatDollars(amount){
 }
 
 function commaSeparateNumber(val){
-    while (/(\d+)(\d{3})/.test(val.toString())){
-      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
-    }
-    return val;
-  }
+		while (/(\d+)(\d{3})/.test(val.toString())){
+			val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+		}
+		return val;
+	}
 
 

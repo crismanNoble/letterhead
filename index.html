@@ -14,11 +14,17 @@
     </head>
 <body>
 <div class="wrapper">
-    <h1>Invoice Creator</h1>
-    <button class="toggle">toggle</button>
-    <div class="invoiceActions">
-        <button class="newProject">new section</button>
+    <h1>Letterhead Creator</h1>
+    <div class="controls">
+      <button class="tool btn" data-action="toggle">toggle</button>
+      <button class="tool btn" data-action="newGroup">new section</button>
+
+      <span class="toolTitle">From:</span>
+      <button class="switch btn btn-red" data-action="changeFrom" data-who="cris">Cris</button>
+      <button class="switch btn" data-action="changeFrom" data-who="angela">Angela</button>
+      <button class="switch btn" data-action="changeFrom" data-who="kovalent">Kovalent</button>
     </div>
+
 </div>
 
     <div class="paper">
@@ -30,8 +36,8 @@
                 <p><strong class="editable">Kovalent</strong></p>
                 <p class="editable">4430 Highland Ave</p>
                 <p class="editable not-spaced">San Diego, CA 92115</p>
-                <p class="editable">+1 630 677 8855</p>
-                <p class="editable not-spaced">angela@kovalent.co</p>
+                <p class="editable fromWho" data-what="phone">+1 619 549 7322</p>
+                <p class="editable not-spaced fromWho" data-what="email">cris@kovalent.co</p>
                 <p class="editable">http://kovalent.co</p>
             </div>
             <div class="line-thing">
@@ -42,111 +48,59 @@
             <p id="whomTo" class="not-spaced editable">cc: Sonya Sparks</p>
             <p id="dateOf" class="editable">March 22, 2015</p>
         </div>
-        <div class="invoice dateBased hidden">
-            <p><span class="groupTitle">Invoice Dates</span><br/>
-            Jan. 18 - Feb. 27</p>
-            <div class="group">
-                <p class="groupTitle not-spaced"><span>Project: CCMP Widgets</span></p>
-                <div class="row">
-                    <span class="groupTitle colTitle col bottomBorder">Date</span>
-                    <span class="groupTitle colTitle col bottomBorder">Task</span>
-                    <span class="groupTitle colTitle col bottomBorder">Hours</span>
-                    <span class="groupTitle colTitle col bottomBorder">Subtotal</span>
-                </div>
-                <div class="row">
-                    <span class="col">2014-08-21</span>
-                    <span class="col">CCMP: Fixing Widgets</span>
-                    <span class="col">12</span>
-                    <span class="col">600</span>
-                </div>
-                <div class="row">
-                    <span class="col">2014-08-21</span>
-                    <span class="col">CCMP: Fixing Widgets</span>
-                    <span class="col">12</span>
-                    <span class="col">600</span>
-                </div>
-            </div>
-            <div class="group">
-                <p class="groupTitle not-spaced"><span>Project: CCMP Alerting</span></p>
-                <div class="row">
-                    <span class="groupTitle colTitle col bottomBorder">Date</span>
-                    <span class="groupTitle colTitle col bottomBorder">Task</span>
-                    <span class="groupTitle colTitle col bottomBorder">Hours</span>
-                    <span class="groupTitle colTitle col bottomBorder">Subtotal</span>
-                </div>
-                <div class="row">
-                    <span class="col">2014-08-21</span>
-                    <span class="col">CCMP: Fixing Widgets</span>
-                    <span class="col">12</span>
-                    <span class="col">600</span>
-                </div>
-                <div class="row">
-                    <span class="col">2014-08-21</span>
-                    <span class="col">CCMP: Fixing Widgets</span>
-                    <span class="col">12</span>
-                    <span class="col">600</span>
-                </div>
-            </div>
-            <div class="total red">
-                <span class="total-title">
-                Total
-                </span>
-                <span class="total-amount">
-                $900
-                </span>
-                <span class="total-hours">
-                9
-                </span>
-            </div>
-        </div>
-        <div class="invoice projectBased">
 
-            <div class="group">
+        <div class="invoice projectBased">
+          <div class="groups">
+            <div class="group col-4">
+                <p class="groupTitle editable rowAdder colSwitcher">Phase 2.1</p>
                 <div class="row">
-                    <div class="groupTitle colTitle col bottomBorder editable rowAdder">Phase 2.1</div>
-                    <div class="groupTitle colTitle col bottomBorder">Hours</div>
-                    <div class="groupTitle colTitle col bottomBorder">Subtotal</div>
+                    <div class="groupTitle colTitle col bottomBorder editable date">Date</div>
+                    <div class="groupTitle colTitle col bottomBorder editable task editable groupOptions">Task</div>
+                    <div class="groupTitle colTitle col bottomBorder c2 hourTitle editable">Hours</div>
+                    <div class="groupTitle colTitle col bottomBorder c2 editable">Subtotal</div>
                 </div>
                 <div class="row">
-                    <div class="col"><span class="title editable subAdder">Fixing Product Gallery</span><p class="editable subItem">sub item 1</p><p class="editable subItem">more explanation</p></div>
+                  <div class="col editable date">12-12-2014</div>
+                    <div class="col task"><span class="title editable subAdder">Fixing Product Gallery</span><p class="editable subItem">sub item 1</p><p class="editable subItem">more explanation</p></div>
                     <div class="col subHours editable">12</div>
                     <div class="col editable subDollars">600</div>
                 </div>
                 <div class="row">
-                    <div class="col"><span class="title editable subAdder">Fixing Product Image</span></div>
+                  <div class="col editable date">12-12-2014</div>
+                    <div class="col task"><span class="title editable subAdder">Fixing Product Image</span></div>
                     <div class="col subHours editable">12</div>
                     <div class="col editable subDollars">600</div>
                 </div>
                 <div class="row">
-                    <div class="col"><span class="title editable subAdder">Finalizing homepage</span></div>
+                  <div class="col editable date">12-12-2014</div>
+                    <div class="col task"><span class="title editable subAdder">Finalizing homepage</span></div>
                     <div class="col subHours editable">12</div>
                     <div class="col editable subDollars">600</div>
                 </div>
             </div>
-            <div class="total red">
-                <span class="total-title">
-                Total
-                </span>
-                <span class="total-amount">
-                $900
-                </span>
-                <span class="total-hours">
-                9
-                </span>
-            </div>
+          </div>
+          <div class="total red">
+              <span class="total-title editable colSwitcher">
+              Total
+              </span>
+              <span class="total-amount">
+              $900
+              </span>
+              <span class="total-hours">
+              9
+              </span>
+          </div>
         </div>
         <div class="disclaimer">
-                <p class="not-spaced">This invoice is confidential and is intended solely for the use of the addressee(s) named above.<br/>Please submit payment no later than 30 days from the date of the invoice.</p>
-                <p class="red">Address all checks to Kovalent.</p>
+                <p class="not-spaced editable">This invoice is confidential and is intended solely for the use of the addressee(s) named above.<br/>Please submit payment no later than 30 days from the date of the invoice.</p>
+                <p class="red editable">Address all checks to Kovalent.</p>
             </div>
         <div class="final-bar">
 
         </div>
 
     </div>
-
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="js/jquery.min.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>
