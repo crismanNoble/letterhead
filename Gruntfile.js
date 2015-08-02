@@ -62,7 +62,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['bower','clean','copy','less']);
-  grunt.registerTask('build',['default','buildGhPages']);
+  grunt.registerTask('build',['default','buildGhPages','default']);
 
 
 }
